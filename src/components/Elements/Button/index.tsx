@@ -2,17 +2,20 @@ import React from "react";
 
 interface Props {
   title: string,
-  variant: string,
+  classname: string,
 }
 
-export default function Button(props) {
-  const { variant = 'bg-blue-300', children = "..." } = props
+function Button(props) {
+  const { classname = 'bg-blue-300', children = "..." } = props
   return (
-    <button className={`h-10 px-6 font-semibold rounded-md ${variant} text-white`} type="submit">
+    <button className={`h-10 px-6 font-semibold rounded-md ${classname} text-white`} type="submit">
       {children}
     </button>
   );
 }
+
+export default Button
+
 
 
 // class Button extends React.Component {

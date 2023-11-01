@@ -1,17 +1,17 @@
 import React from "react";
-import Button from "./components/Elements/Button/index.tsx"
+// import Input from "./components/Elements/Input";
+// import Button from "./components/Elements/Button/Index";
+// import FormLogin from "./components/Fragments/FormLogin";
+import AuthLayouts from "./components/Layouts/AuthLayouts";
+// import Input from "./components/Elements/Input/Input.jsx";
+// import Label from "./components/Elements/Input/Label.js";
 
 function App() {
 
   return (
     <>
-      <div className="App bg-gray-100">
-       {/* <Button />
-       <Button /> */}
-       <Button variant="bg-green-500">
-          Title
-       </Button>
-       {/* <ButtonGray /> */}
+      <div className="flex justify-center min-h-screen items-center">
+        <AuthLayouts />
       </div>
     </>
   )
