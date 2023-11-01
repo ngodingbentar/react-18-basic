@@ -1,7 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 function AuthLayouts(props) {
-  const { children, title } = props
+  const { children, title, type } = props
   return (
     <>
       <div className="flex justify-center min-h-screen items-center">
@@ -11,9 +12,26 @@ function AuthLayouts(props) {
             Enter your details
           </p>
           {children}
+          <Navigation type={type} />
         </div>
       </div>
     </>
+  )
+}
+
+function Navigation ({type}) {
+  return (
+    <div className='text-sm mt-6 text-center '>
+      {type === 'login' ? (
+        <p>
+          Don't have an account ? <Link to='/register' className='font-bold text-blue-500 '>Sign up</Link>
+        </p>
+      ) : (
+        <p>
+          Have an account ? <Link to='/login' className='font-bold text-blue-500 '>Sign in</Link>
+        </p>
+      )}
+    </div>
   )
 }
 
