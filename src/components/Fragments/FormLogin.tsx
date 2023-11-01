@@ -3,9 +3,15 @@ import Input from '../Elements/Input'
 import Button from '../Elements/Button/Index'
 
 function FormLogin() {
+  function handleLogin (event) {
+    event.preventDefault()
+    localStorage.setItem('email', event.target.email.value);
+    localStorage.setItem('password', event.target.password.value);
+    window.location.href = '/products'
+  }
   return (
     <>
-      <form action="">
+      <form onSubmit={handleLogin}>
         <Input
           label="Email"
           type="email"
@@ -20,7 +26,7 @@ function FormLogin() {
           placeholder="**********"
           htmlfor="password"
         />
-        <Button classname="bg-blue-500 w-full">Login</Button>
+        <Button classname="bg-blue-500 w-full" type="submit">Login</Button>
       </form>
     </>
   )

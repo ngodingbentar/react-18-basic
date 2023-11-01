@@ -6,9 +6,13 @@ interface Props {
 }
 
 function Button(props) {
-  const { classname = 'bg-blue-300', children = "..." } = props
+  const { classname = 'bg-blue-300', children = "...", onClick = () => {}, type = "button" } = props
   return (
-    <button className={`h-10 px-6 font-semibold rounded-md ${classname} text-white`} type="submit">
+    <button
+      type={type}
+      className={`h-10 px-6 font-semibold rounded-md ${classname} text-white`}
+      onClick={() => onClick()}
+    >
       {children}
     </button>
   );
