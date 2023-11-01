@@ -5,7 +5,7 @@ import Button from '../Elements/Button/Index'
 function CardProduct(props) {
   const { children } = props
   return (
-    <div className='w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow'>
+    <div className='w-full max-w-[300px] bg-white border border-gray-200 rounded-lg shadow mx-2 flex flex-col justify-between'>
       {children}
     </div>
   )
@@ -22,7 +22,7 @@ function Header () {
 function Body (props) {
   const { title, children } = props
   return (
-    <div className="px-5 pb-5">
+    <div className="px-5 pb-5 h-full">
       <Link to={"/products/1"}>
         <div className='text-s font-semibold tracking-tight'>
           {title}
@@ -35,11 +35,11 @@ function Body (props) {
   )
 }
 
-function Footer () {
+function Footer ({price}) {
   return (
     <>
       <div className="flex items-center justify-between p-4">
-        <span className='text-xl font-bold '>Rp. 100</span>
+        <span className='text-xl font-bold '>Rp. {price}</span>
         <Button classname='bg-blue-600 text-white'>Add To Cart</Button>
       </div>
     </>
