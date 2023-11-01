@@ -1,10 +1,10 @@
 import React from 'react'
 
 function Label(props) {
-  const { htmlfor, children } = props
+  const { name, children } = props
   return (
     <>
-      <label htmlFor={htmlfor} className="block text-slate-700 text-sm font-bold mb-2 ">
+      <label htmlFor={name} className="block text-slate-700 text-sm font-bold mb-2 ">
         {children}
       </label>
     </>
