@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Button from '../components/Elements/Button/Index'
 import CardProduct from '../components/Fragments/CardProduct'
 import DataJson from '../assets/products.json'
+import { getAllProducts } from '../services/product.service'
 
-const products = DataJson.products
+// const products = DataJson.products
 const email = localStorage.getItem('email')
 interface IProduct {
   id: number,
@@ -13,6 +14,7 @@ function ProductsPage() {
 
   const [cart, setCart] = useState([] as IProduct[])
   const [totalPrice, setTotalPrice] = useState(0)
+  const [products, setProducts] = useState([])
 
   function addToCart (id) {
     if(cart.find((item) => item.id === id)) {
@@ -46,7 +48,23 @@ function ProductsPage() {
       setTotalPrice(total)
       localStorage.setItem("cart", JSON.stringify(cart))
     }
-  }, [cart])
+  }, [cart, products])
+
+
+  // useRef
+  const cartRef = useRef(JSON.parse(localStorage.getItem("cart")) || [])
+
+  function addToCartRef (id) {
+    cartRef.current = [...cartRef.current, {id, qty: 1}]
+    localStorage.setItem("cart", JSON.stringify(cartRef.current))
+  }
+
+  useEffect(() => {
+    getAllProducts((data) => {
+      console.log('data', data)
+      setProducts(data)
+    })
+  },[])
 
   return (
     <>
@@ -56,9 +74,9 @@ function ProductsPage() {
       </div>
       <div className='flex py-5 '>
         <div className="w-2/3 flex justify-center flex-wrap">
-          {products.map((product) => (
+          {products.length > 0 && products.map((product) => (
             <CardProduct key={product.id}>
-              <CardProduct.Header />
+              <CardProduct.Header image={product.image} />
               <CardProduct.Body title={product.title}>
                 {product.description}
               </CardProduct.Body>
@@ -77,14 +95,14 @@ function ProductsPage() {
               </tr>
             </thead>
             <tbody>
-              {cart.map((item, i) => {
+              {products.length > 0 && cart.map((item, i) => {
                 const product = products.find((product) => product.id === item.id)
                 return (
-                  <tr key={i}>
-                    <td>{product?.title}</td>
-                    <td>{product?.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
+                  <tr key={i} className='border-b-2'>
+                    <td>{product?.title.substring(0, 30)}</td>
+                    <td>{product?.price.toLocaleString('id-ID', { style: 'currency', currency: 'USD' })}</td>
                     <td>{item.qty}</td>
-                    <td>{(product!.price * item.qty).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} </td>
+                    <td>{(product!.price * item.qty).toLocaleString('id-ID', { style: 'currency', currency: 'USD' })} </td>
                   </tr>
                 )
               })}
@@ -94,7 +112,7 @@ function ProductsPage() {
                 </td>
                 <td>
                   <b>
-                    {totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+                    {totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'USD' })}
                   </b>
                 </td>
               </tr>

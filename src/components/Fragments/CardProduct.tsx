@@ -11,10 +11,10 @@ function CardProduct(props) {
   )
 }
 
-function Header () {
+function Header ({image}) {
   return (
     <Link to={"/products/1"}>
-      <img src='https://picsum.photos/200' alt='img' className='flex m-auto p-4' />
+      <img src={image} alt='img' className='flex m-auto p-4 h-60 w-full object-cover' />
     </Link>
   )
 }
@@ -25,10 +25,10 @@ function Body (props) {
     <div className="px-5 pb-5 h-full">
       <Link to={"/products/1"}>
         <div className='text-s font-semibold tracking-tight'>
-          {title}
+          {title.substring(0, 30)}
         </div>
         <div className="text-sm">
-          {children}
+          { children.substring(0, 100) }
         </div>
       </Link>
     </div>
@@ -40,7 +40,7 @@ function Footer (props) {
   return (
     <>
       <div className="flex items-center justify-between p-4">
-        <span className='text-xl font-bold '>{price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</span>
+        <span className='text-xl font-bold '>{price.toLocaleString('id-ID', { style: 'currency', currency: 'USD' })}</span>
         <Button classname='bg-blue-600 text-white' onClick={() =>addToCart(id)}>Add To Cart</Button>
       </div>
     </>
