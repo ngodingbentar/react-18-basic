@@ -1,19 +1,18 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from '../components/Elements/Button/Index'
 import CardProduct from '../components/Fragments/CardProduct'
 import DataJson from '../assets/products.json'
 
 const products = DataJson.products
 const email = localStorage.getItem('email')
-
+interface IProduct {
+  id: number,
+  qty: number,
+}
 function ProductsPage() {
 
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      qty: 2,
-    }
-  ])
+  const [cart, setCart] = useState([] as IProduct[])
+  const [totalPrice, setTotalPrice] = useState(0)
 
   function addToCart (id) {
     if(cart.find((item) => item.id === id)) {
@@ -32,6 +31,23 @@ function ProductsPage() {
     localStorage.clear()
     window.location.href = '/login'
   }
+
+  useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem("cart")) || [])
+    console.log('wadudu')
+  }, [])
+
+  useEffect(() => {
+    let total = 0
+    if(cart.length > 0 && products.length > 0) {
+      cart.forEach((item) => {
+        total += item.qty * products.find((product) => product.id === item.id).price
+      })
+      setTotalPrice(total)
+      localStorage.setItem("cart", JSON.stringify(cart))
+    }
+  }, [cart])
+
   return (
     <>
       <div className='flex justify-end h-20 bg-gray-200 items-center px-10 '>
@@ -72,6 +88,16 @@ function ProductsPage() {
                   </tr>
                 )
               })}
+              <tr>
+                <td colSpan={3}>
+                  <b>Total price</b>
+                </td>
+                <td>
+                  <b>
+                    {totalPrice.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}
+                  </b>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
