@@ -1,13 +1,32 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
 import Button from '../components/Elements/Button/Index'
 import CardProduct from '../components/Fragments/CardProduct'
 import DataJson from '../assets/products.json'
 
-function ProductsPage() {
-  const data = DataJson.products
-  const email = localStorage.getItem('email')
+const products = DataJson.products
+const email = localStorage.getItem('email')
 
+function ProductsPage() {
+
+  const [cart, setCart] = useState([
+    {
+      id: 1,
+      qty: 2,
+    }
+  ])
+
+  function addToCart (id) {
+    if(cart.find((item) => item.id === id)) {
+      setCart(
+        cart.map((item2) => item2.id === id ? {...item2, qty: item2.qty + 1} : item2)
+      )
+    } else {
+      setCart([...cart, {
+        id,
+        qty: 1
+      }])
+    }
+  }
   function handleLogout () {
     console.log('logout')
     localStorage.clear()
@@ -19,16 +38,43 @@ function ProductsPage() {
         {email}
         <Button classname="ml-4 bg-gray-950" onClick={handleLogout}>Logout</Button>
       </div>
-      <div className='flex justify-center py-5 flex-wrap'>
-        {data.map((product) => (
-          <CardProduct key={product.id}>
-            <CardProduct.Header />
-            <CardProduct.Body title={product.title}>
-              {product.description}
-            </CardProduct.Body>
-            <CardProduct.Footer price={product.price} />
-          </CardProduct>
-        ))}
+      <div className='flex py-5 '>
+        <div className="w-2/3 flex justify-center flex-wrap">
+          {products.map((product) => (
+            <CardProduct key={product.id}>
+              <CardProduct.Header />
+              <CardProduct.Body title={product.title}>
+                {product.description}
+              </CardProduct.Body>
+              <CardProduct.Footer price={product.price} id={product.id} addToCart={addToCart} />
+            </CardProduct>
+          ))}
+        </div>
+        <div className="w-1/3">
+          <table className='text-left table-auto border-separate border-spacing-x-5 '>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Totsl</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cart.map((item, i) => {
+                const product = products.find((product) => product.id === item.id)
+                return (
+                  <tr key={i}>
+                    <td>{product?.title}</td>
+                    <td>{product?.price.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
+                    <td>{item.qty}</td>
+                    <td>{(product!.price * item.qty).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })} </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   )
