@@ -4,6 +4,7 @@ import CardProduct from '../components/Fragments/CardProduct'
 import DataJson from '../assets/products.json'
 import { getAllProducts } from '../services/product.service'
 import { getUsername } from '../services/auth.service'
+import { useLogin } from '../hooks/useLogin'
 
 // const products = DataJson.products
 const email = localStorage.getItem('email')
@@ -17,7 +18,8 @@ function ProductsPage() {
   const [cart, setCart] = useState([] as IProduct[])
   const [totalPrice, setTotalPrice] = useState(0)
   const [products, setProducts] = useState([])
-  const [username, setUsername] = useState(null)
+  // const [username, setUsername] = useState(null)
+  const username = useLogin()
   
   function addToCart (id) {
     if(cart.find((item) => item.id === id)) {
@@ -68,14 +70,14 @@ function ProductsPage() {
     })
   },[])
 
-  useEffect(() => {
-    if(token) {
-      setUsername(getUsername(token))
-      console.log('tokenki', token)
-    } else {
-      window.location.href = '/login'
-    }
-  }, [])
+  // useEffect(() => {
+  //   if(token) {
+  //     setUsername(getUsername(token))
+  //     console.log('tokenki', token)
+  //   } else {
+  //     window.location.href = '/login'
+  //   }
+  // }, [])
 
   return (
     <>
