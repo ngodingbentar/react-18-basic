@@ -3,19 +3,22 @@ import Button from '../components/Elements/Button/Index'
 import CardProduct from '../components/Fragments/CardProduct'
 import DataJson from '../assets/products.json'
 import { getAllProducts } from '../services/product.service'
+import { getUsername } from '../services/auth.service'
 
 // const products = DataJson.products
 const email = localStorage.getItem('email')
+const token = localStorage.getItem('token')
 interface IProduct {
   id: number,
   qty: number,
 }
 function ProductsPage() {
-
+  
   const [cart, setCart] = useState([] as IProduct[])
   const [totalPrice, setTotalPrice] = useState(0)
   const [products, setProducts] = useState([])
-
+  const [username, setUsername] = useState(null)
+  
   function addToCart (id) {
     if(cart.find((item) => item.id === id)) {
       setCart(
@@ -29,7 +32,6 @@ function ProductsPage() {
     }
   }
   function handleLogout () {
-    console.log('logout')
     localStorage.clear()
     window.location.href = '/login'
   }
@@ -66,10 +68,19 @@ function ProductsPage() {
     })
   },[])
 
+  useEffect(() => {
+    if(token) {
+      setUsername(getUsername(token))
+      console.log('tokenki', token)
+    } else {
+      window.location.href = '/login'
+    }
+  }, [])
+
   return (
     <>
       <div className='flex justify-end h-20 bg-gray-200 items-center px-10 '>
-        {email}
+        {username}
         <Button classname="ml-4 bg-gray-950" onClick={handleLogout}>Logout</Button>
       </div>
       <div className='flex py-5 '>
