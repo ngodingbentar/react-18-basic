@@ -8,7 +8,6 @@ export function useLogin () {
   useEffect(() => {
     if(token) {
       setUsername(getUsername(token))
-      console.log('tokenki', token)
     } else {
       window.location.href = '/login'
     }
