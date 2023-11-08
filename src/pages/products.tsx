@@ -17,7 +17,6 @@ function ProductsPage() {
 
   return (
     <>
-      <Navbar />
       <div className='flex py-5 '>
         <div className="w-2/3 flex justify-center flex-wrap">
           {products.length > 0 && products.map((product) => (
